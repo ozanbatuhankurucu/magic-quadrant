@@ -49,8 +49,10 @@ const ChartRightText = styled.span`
 
 const ChartAreaLabelContainer = styled.div`
   display: grid;
-  grid-template-columns: 200px 200px;
-  grid-template-rows: 200px 200px;
+  grid-template-columns: ${(props: ChartAreaLabelContainerProps) =>
+    `${props.width / 2}px ${props.width / 2}px`};
+  grid-template-rows: ${(props: ChartAreaLabelContainerProps) =>
+    `${props.width / 2}px ${props.width / 2}px`};
   position: absolute;
 `
 
@@ -73,7 +75,7 @@ const ScatterChart: React.FC<ScatterChartProps> = ({ children, width, height }) 
   return (
     <Chart height={height} width={width}>
       <ChartLeftText>Ability To Execute -&gt;</ChartLeftText>
-      <ChartAreaLabelContainer>
+      <ChartAreaLabelContainer width={width} height={height}>
         <Area positionStart>
           <AreaLabel positionStart>Challangers</AreaLabel>
         </Area>
@@ -105,6 +107,10 @@ interface ChartProps {
 }
 interface AreaProps {
   positionStart?: boolean
+}
+interface ChartAreaLabelContainerProps {
+  width: number
+  height: number
 }
 
 export default ScatterChart
