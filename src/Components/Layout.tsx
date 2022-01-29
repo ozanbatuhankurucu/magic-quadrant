@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { WHITE } from '../../Services/constants'
-import { LayoutProps } from './Layout.types'
+import { WHITE } from '../Services/constants'
+interface LayoutProps {
+  children: React.ReactNode
+}
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return <Container>{children} </Container>
