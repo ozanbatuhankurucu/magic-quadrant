@@ -1,6 +1,8 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { DARK_GREY, LIGHT_BLUE, LIGHT_GREY, WHITE } from '../Services/constants'
+import { DARK_GREY, LIGHT_GREY } from '../Services/constants'
+import ChartAreaLabel from './ChartAreaLabel'
+import Point from './Point'
 
 const Chart = styled.div`
   position: relative;
@@ -56,39 +58,17 @@ const ChartAreaLabelContainer = styled.div`
   position: absolute;
 `
 
-const Area = styled.div`
-  display: flex;
-  justify-content: ${(props: AreaProps) => (props.positionStart ? 'flex-start' : 'flex-end')};
-  flex-direction: column;
-  align-items: center;
-`
-const AreaLabel = styled.span`
-  color: ${WHITE};
-  background-color: ${LIGHT_BLUE};
-  padding: 4px 8px;
-  margin-top: ${(props: AreaProps) => (props.positionStart ? '5px' : '0')};
-  margin-bottom: ${(props: AreaProps) => (props.positionStart ? '0' : '10px')};
-  border-radius: 4px;
-`
-
 const ScatterChart: React.FC<ScatterChartProps> = ({ children, width, height }) => {
   return (
     <Chart height={height} width={width}>
       <ChartLeftText>Ability To Execute -&gt;</ChartLeftText>
       <ChartAreaLabelContainer width={width} height={height}>
-        <Area positionStart>
-          <AreaLabel positionStart>Challangers</AreaLabel>
-        </Area>
-        <Area positionStart>
-          <AreaLabel positionStart>Leaders</AreaLabel>
-        </Area>
-        <Area>
-          <AreaLabel positionStart={false}>Niche Players</AreaLabel>
-        </Area>
-        <Area>
-          <AreaLabel positionStart={false}>Visionaries</AreaLabel>
-        </Area>
+        <ChartAreaLabel positionStart>Challangers </ChartAreaLabel>
+        <ChartAreaLabel positionStart>Leaders</ChartAreaLabel>
+        <ChartAreaLabel>Niche Players</ChartAreaLabel>
+        <ChartAreaLabel> Visionaries</ChartAreaLabel>
       </ChartAreaLabelContainer>
+      <Point label='IBM' x={30} y={30} />
       <ChartRightText>Completeness Of Vision -&gt;</ChartRightText>
     </Chart>
   )
@@ -105,9 +85,7 @@ interface ChartProps {
   width: number
   height: number
 }
-interface AreaProps {
-  positionStart?: boolean
-}
+
 interface ChartAreaLabelContainerProps {
   width: number
   height: number
