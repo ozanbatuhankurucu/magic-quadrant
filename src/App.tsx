@@ -1,22 +1,20 @@
+import { useState, useRef } from 'react'
 import Layout from './Components/Layout'
 import ScatterChart from './Components/ScatterChart'
+import Scatter from './Components/Scatter'
+import { PointType } from './Services/commonTypes'
 
 function App() {
-  // Sample data
-  const data = [
-    { x: 1, y: 23 },
-    { x: 2, y: 3 },
-    { x: 3, y: 15 },
-    { x: 4, y: 35 },
-    { x: 5, y: 45 },
-    { x: 6, y: 25 },
-    { x: 7, y: 17 },
-    { x: 8, y: 32 },
-    { x: 9, y: 43 }
-  ]
+  const chartRef = useRef<HTMLDivElement | null>(null)
+  const [points, setPoints] = useState<PointType[]>([
+    { x: 1, y: 23, label: 'Amazon', id: '1' },
+    { x: 50, y: 50, label: 'Google', id: '2' }
+  ])
   return (
     <Layout>
-      <ScatterChart width={400} height={400}></ScatterChart>
+      <ScatterChart width={400} height={400} chartRef={chartRef}>
+        <Scatter points={points} setPoints={setPoints} chartRef={chartRef} />
+      </ScatterChart>
     </Layout>
   )
 }

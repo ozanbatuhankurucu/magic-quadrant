@@ -2,7 +2,6 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { DARK_GREY, LIGHT_GREY } from '../Services/constants'
 import ChartAreaLabel from './ChartAreaLabel'
-import Point from './Point'
 
 const Chart = styled.div`
   position: relative;
@@ -58,9 +57,24 @@ const ChartAreaLabelContainer = styled.div`
   position: absolute;
 `
 
-const ScatterChart: React.FC<ScatterChartProps> = ({ children, width, height }) => {
+const ScatterChart: React.FC<ScatterChartProps> = ({
+  children,
+  width,
+  height,
+  chartRef
+}): React.ReactElement => {
+  const handleDragOver = (e: React.DragEvent<HTMLSpanElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
   return (
-    <Chart height={height} width={width}>
+    <Chart
+      ref={chartRef}
+      onDragOver={(e) => handleDragOver(e)}
+      onDragLeave={(e) => handleDragOver(e)}
+      height={height}
+      width={width}>
       <ChartLeftText>Ability To Execute -&gt;</ChartLeftText>
       <ChartAreaLabelContainer width={width} height={height}>
         <ChartAreaLabel positionStart>Challangers </ChartAreaLabel>
@@ -68,17 +82,17 @@ const ScatterChart: React.FC<ScatterChartProps> = ({ children, width, height }) 
         <ChartAreaLabel>Niche Players</ChartAreaLabel>
         <ChartAreaLabel> Visionaries</ChartAreaLabel>
       </ChartAreaLabelContainer>
-      <Point label='IBM' x={30} y={30} />
+      {children}
       <ChartRightText>Completeness Of Vision -&gt;</ChartRightText>
     </Chart>
   )
 }
 
 interface ScatterChartProps {
-  children?: React.ReactNode
-  data?: any
+  children: React.ReactNode
   width: number
   height: number
+  chartRef: React.RefObject<HTMLDivElement>
 }
 
 interface ChartProps {

@@ -5,7 +5,7 @@ interface LayoutProps {
   children: React.ReactNode
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }): React.ReactElement => {
   return <Container>{children} </Container>
 }
 

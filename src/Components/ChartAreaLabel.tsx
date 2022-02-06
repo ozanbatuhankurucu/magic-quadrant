@@ -18,7 +18,10 @@ const AreaLabel = styled.span`
   border-radius: 4px;
 `
 
-const ChartAreaLabel: React.FC<ChartAreaLabelProps> = ({ children, positionStart = false }) => {
+const ChartAreaLabel: React.FC<ChartAreaLabelProps> = ({
+  children,
+  positionStart = false
+}): React.ReactElement => {
   return (
     <Area positionStart={positionStart}>
       <AreaLabel positionStart={positionStart}>{children}</AreaLabel>
