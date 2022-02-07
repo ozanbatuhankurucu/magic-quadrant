@@ -18,7 +18,10 @@ function App() {
 
   function handlePointsFromLocalStorage(): PointType[] {
     const pointsFromLocalStorage = JSON.parse(localStorage.getItem('points') || '[]')
-    return pointsFromLocalStorage
+
+    return pointsFromLocalStorage.length === 0
+      ? [{ x: 50, y: 50, label: 'Google', id: '1' }]
+      : pointsFromLocalStorage
   }
 
   const handlePointChange = (event: React.ChangeEvent<HTMLInputElement>, pointId: string): void => {
