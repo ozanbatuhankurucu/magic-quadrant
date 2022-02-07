@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const PointerContainer = styled.span`
   position: absolute;
-  bottom: ${(props: PointContainerProps) => props.y * 4 * 0.88}px;
+  bottom: ${(props: PointContainerProps) => props.y * 4 * 0.9}px;
   left: ${(props: PointContainerProps) => props.x * 4 * 0.95}px;
   z-index: 1;
 `
