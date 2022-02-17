@@ -20,7 +20,7 @@ function App() {
     const pointsFromLocalStorage = JSON.parse(localStorage.getItem('points') || '[]')
 
     return pointsFromLocalStorage.length === 0
-      ? [{ x: 50, y: 50, label: 'Google', id: '1' }]
+      ? [{ x: 50, y: 50, label: 'Google', id: '1', isChecked: false }]
       : pointsFromLocalStorage
   }
 
@@ -51,13 +51,28 @@ function App() {
   }
 
   const addNewPoint = (): void => {
-    const newPoint = { x: 50, y: 50, label: 'New', id: Math.random().toString() }
+    const newPoint = { x: 50, y: 50, label: 'New', id: Math.random().toString(), isChecked: false }
     localStorage.setItem('points', JSON.stringify([...points, newPoint]))
     setPoints((prevPoints: PointType[]): PointType[] => [...prevPoints, newPoint])
   }
 
   const deletePoint = (pointId: string): void => {
     const newPoints = points.filter((point: PointType) => point.id !== pointId)
+    localStorage.setItem('points', JSON.stringify(newPoints))
+    setPoints(newPoints)
+  }
+
+  const checkPoint = (pointId: string, isChecked: boolean) => {
+    const newPoints = points.map((point: PointType) => {
+      if (point.id === pointId) {
+        return {
+          ...point,
+          isChecked
+        }
+      }
+      return point
+    })
+
     localStorage.setItem('points', JSON.stringify(newPoints))
     setPoints(newPoints)
   }
@@ -77,6 +92,7 @@ function App() {
           handlePointChange={handlePointChange}
           addNewPoint={addNewPoint}
           deletePoint={deletePoint}
+          checkPoint={checkPoint}
         />
       </ScatterRow>
     </Layout>

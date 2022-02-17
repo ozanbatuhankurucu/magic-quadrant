@@ -21,7 +21,7 @@ const Dot = styled.div`
   cursor: pointer;
   width: 15px;
   height: 15px;
-  background-color: ${DARK_BLUE};
+  background-color: ${(props: DotProps) => props.dotColor};
   border-radius: 50%;
 `
 
@@ -31,7 +31,13 @@ const PointLabel = styled.span`
   color: ${DARK_BLUE};
 `
 
-const Point: React.FC<PointProps> = ({ x, y, label, handleDragEnter }): React.ReactElement => {
+const Point: React.FC<PointProps> = ({
+  x,
+  y,
+  label,
+  handleDragEnter,
+  isChecked
+}): React.ReactElement => {
   // useRef is a hook that lets you store a reference to a DOM element
   // by using useRef here, place of ref element on RAM is unchangeable after every rerender.
   let outerDotRef = useRef<HTMLDivElement | null>(null)
@@ -45,6 +51,7 @@ const Point: React.FC<PointProps> = ({ x, y, label, handleDragEnter }): React.Re
       {/* <OuterDot ref={outerDotRef} id='outerDot' x={x} y={y} /> */}
       <Dot
         id='dot'
+        dotColor={isChecked ? '#ece4db' : DARK_BLUE}
         onMouseOver={() => {
           if (outerDotRef && outerDotRef.current) {
             outerDotRef.current.style.display = 'block'
@@ -65,10 +72,15 @@ interface PointProps {
   y: number
   label: string
   handleDragEnter: (e: React.DragEvent<HTMLSpanElement>) => void
+  isChecked: boolean
 }
 
 interface PointContainerProps {
   x: number
   y: number
+}
+
+interface DotProps {
+  dotColor: string
 }
 export default Point

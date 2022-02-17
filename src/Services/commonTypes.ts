@@ -3,4 +3,5 @@ export interface PointType {
   y: number
   label: string
   id: string
+  isChecked: boolean
 }

@@ -51,7 +51,8 @@ const ChartTable: React.FC<ChartTableProps> = ({
   points,
   handlePointChange,
   addNewPoint,
-  deletePoint
+  deletePoint,
+  checkPoint
 }) => {
   return (
     <Table>
@@ -64,6 +65,7 @@ const ChartTable: React.FC<ChartTableProps> = ({
           </TableData>
         </tr>
         <TableHeaderRow>
+          <TableData withPadding>Checked</TableData>
           <TableData withPadding>Label</TableData>
           <TableData withPadding>Vision</TableData>
           <TableData withPadding>Ability</TableData>
@@ -72,9 +74,18 @@ const ChartTable: React.FC<ChartTableProps> = ({
       </tbody>
       <tbody>
         {points.map((point: PointType) => {
-          const { id, label, x: vision, y: ability } = point
+          const { id, label, x: vision, y: ability, isChecked } = point
+
           return (
             <tr key={id}>
+              <TableData>
+                <Input
+                  type='checkbox'
+                  name='vehicle1'
+                  checked={isChecked}
+                  onChange={() => checkPoint(id, !isChecked)}
+                />
+              </TableData>
               <TableData>
                 <Input
                   type='text'
@@ -125,6 +136,7 @@ interface ChartTableProps {
   handlePointChange: (event: React.ChangeEvent<HTMLInputElement>, pointId: string) => void
   addNewPoint: () => void
   deletePoint: (pointId: string) => void
+  checkPoint: (pointId: string, isChecked: boolean) => void
 }
 
 interface TableDataProps {

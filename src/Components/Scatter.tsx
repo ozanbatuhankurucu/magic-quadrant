@@ -29,13 +29,14 @@ const Scatter: React.FC<ScatterProps> = ({ points, setPoints, chartRef }): React
   return (
     <>
       {points.map((point: PointType) => {
-        const { x, y, label, id } = point
+        const { x, y, label, id, isChecked } = point
         return (
           <Point
             key={id}
             label={label}
             x={x}
             y={y}
+            isChecked={isChecked}
             handleDragEnter={(e) => handleDragEnter(e, id)}
           />
         )
