@@ -63,6 +63,27 @@ const Point: React.FC<PointProps> = ({
           }
         }}
       />
+      <div
+        style={{
+          border: '1px dashed red',
+          position: 'absolute',
+          width: x * 4,
+          transform: 'rotate(deg)',
+          right: 15,
+          top: 5
+        }}
+      />
+      <div
+        style={{
+          border: '1px dashed red',
+          position: 'absolute',
+          width: y * 4,
+          transform: 'rotate(90deg)',
+          transformOrigin: 'top left',
+          left: 10,
+          top: 5
+        }}
+      />
       <PointLabel>{label}</PointLabel>
     </PointerContainer>
   )
