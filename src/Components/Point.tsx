@@ -67,9 +67,10 @@ const Point: React.FC<PointProps> = ({
         style={{
           border: '1px dashed red',
           position: 'absolute',
-          width: x * 4,
-          transform: 'rotate(deg)',
-          right: 15,
+          width: x * 4 * 0.97,
+          transform: 'rotate(180deg)',
+          transformOrigin: 'top left',
+          left: 10,
           top: 5
         }}
       />
