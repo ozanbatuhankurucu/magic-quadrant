@@ -32,16 +32,18 @@ function ColorDot({ color, onChange }: { color: string; onChange: (c: string) =>
         style={{ backgroundColor: color }}
         aria-label="Change color"
       />
-      <div className="absolute left-0 top-7 z-20 hidden group-hover:flex gap-1 p-2 bg-white dark:bg-gray-800
-                      rounded-lg shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 flex-wrap w-[120px]">
-        {POINT_COLORS.map((c) => (
-          <button
-            key={c}
-            className="w-5 h-5 rounded-full hover:scale-125 transition-transform ring-1 ring-gray-200 dark:ring-gray-600"
-            style={{ backgroundColor: c }}
-            onClick={() => onChange(c)}
-          />
-        ))}
+      <div className="absolute left-0 top-5 z-20 hidden group-hover:flex pt-2">
+        <div className="flex gap-1 p-2 bg-white dark:bg-gray-800
+                        rounded-lg shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 flex-wrap w-[120px]">
+          {POINT_COLORS.map((c) => (
+            <button
+              key={c}
+              className="w-5 h-5 rounded-full hover:scale-125 transition-transform ring-1 ring-gray-200 dark:ring-gray-600"
+              style={{ backgroundColor: c }}
+              onClick={() => onChange(c)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
