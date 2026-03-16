@@ -184,20 +184,22 @@ export function MagicQuadrant({ points, config, showGrid, onMovePoint, chartRef 
                 {point.label}
               </text>
 
-              {isHovered && !isDragging && (
-                <g>
-                  <rect
-                    x={cx + 14} y={cy - 28}
-                    width={120} height={36} rx={6}
-                    className="fill-gray-800 dark:fill-gray-200"
-                    opacity={0.92}
-                  />
-                  <text x={cx + 22} y={cy - 14}
-                    className="fill-white dark:fill-gray-900" fontSize={10} fontWeight={500}>
-                    Vision: {point.x} | Execute: {point.y}
-                  </text>
-                </g>
-              )}
+              {isHovered && !isDragging && (() => {
+                const tw = 140, th = 32, gap = 12;
+                const tx = cx + gap + tw > right ? cx - gap - tw : cx + gap;
+                const ty = cy - th - 4 < padding.top ? cy + gap : cy - th - 4;
+                return (
+                  <g className="pointer-events-none">
+                    <rect x={tx} y={ty} width={tw} height={th} rx={6}
+                      className="fill-gray-800 dark:fill-gray-200" opacity={0.92} />
+                    <text x={tx + tw / 2} y={ty + th / 2 + 4}
+                      textAnchor="middle"
+                      className="fill-white dark:fill-gray-900" fontSize={10} fontWeight={500}>
+                      Vision: {point.x} | Execute: {point.y}
+                    </text>
+                  </g>
+                );
+              })()}
             </g>
           );
         })}

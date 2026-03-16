@@ -1,4 +1,3 @@
-import { toPng } from "html-to-image";
 import type { Point } from "./types";
 import { POINT_COLORS } from "./constants";
 
@@ -28,15 +27,85 @@ export function createPoint(points: Point[], overrides?: Partial<Point>): Point 
   };
 }
 
-export async function exportAsPng(element: HTMLElement, filename = "magic-quadrant.png") {
-  const dataUrl = await toPng(element, {
-    backgroundColor: "#ffffff",
-    pixelRatio: 2,
+const STYLE_PROPS = [
+  "fill",
+  "stroke",
+  "stroke-width",
+  "stroke-dasharray",
+  "opacity",
+  "font-size",
+  "font-weight",
+  "font-family",
+  "text-anchor",
+  "dominant-baseline",
+  "filter",
+] as const;
+
+function inlineStyles(source: SVGElement, target: SVGElement) {
+  const computed = getComputedStyle(source);
+  for (const prop of STYLE_PROPS) {
+    const val = computed.getPropertyValue(prop);
+    if (val) target.style.setProperty(prop, val);
+  }
+  const srcChildren = source.children;
+  const tgtChildren = target.children;
+  for (let i = 0; i < srcChildren.length; i++) {
+    const s = srcChildren[i];
+    const t = tgtChildren[i];
+    if (s instanceof SVGElement && t instanceof SVGElement) {
+      inlineStyles(s, t);
+    }
+  }
+}
+
+export async function exportAsPng(container: HTMLElement, filename = "magic-quadrant.png") {
+  const svg = container.querySelector("svg");
+  if (!svg) throw new Error("No SVG found");
+
+  const clone = svg.cloneNode(true) as SVGSVGElement;
+  inlineStyles(svg, clone);
+
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  clone.removeAttribute("class");
+
+  const vbParts = (svg.getAttribute("viewBox") ?? "0 0 640 580").split(" ");
+  const exportW = Number(vbParts[2]) * 3;
+  const exportH = Number(vbParts[3]) * 3;
+  clone.setAttribute("width", String(exportW));
+  clone.setAttribute("height", String(exportH));
+
+  const data = new XMLSerializer().serializeToString(clone);
+  const blob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const img = new Image();
+  img.width = exportW;
+  img.height = exportH;
+
+  await new Promise<void>((resolve, reject) => {
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = exportW;
+      canvas.height = exportH;
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillStyle = getComputedStyle(container).backgroundColor || "#ffffff";
+      ctx.fillRect(0, 0, exportW, exportH);
+      ctx.drawImage(img, 0, 0, exportW, exportH);
+      URL.revokeObjectURL(url);
+
+      canvas.toBlob((b) => {
+        if (!b) { reject(new Error("Canvas toBlob failed")); return; }
+        const a = document.createElement("a");
+        a.download = filename;
+        a.href = URL.createObjectURL(b);
+        a.click();
+        URL.revokeObjectURL(a.href);
+        resolve();
+      }, "image/png");
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Image load failed")); };
+    img.src = url;
   });
-  const link = document.createElement("a");
-  link.download = filename;
-  link.href = dataUrl;
-  link.click();
 }
 
 export function exportAsJson(points: Point[], filename = "magic-quadrant.json") {
